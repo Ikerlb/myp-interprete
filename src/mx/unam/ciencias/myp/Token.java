@@ -22,7 +22,12 @@ public class Token{
         return expresion.toString()+"["+valorDelToken+"]";
     }
 
-    public boolean equals(Token t){
-        return expresion.equals(t.expresion)&&valorDelToken==t.valorDelToken;
+    public boolean equals(Object o){
+        if (o == null)
+            return false;
+        if (getClass() != o.getClass())
+            return false;
+        @SuppressWarnings("unchecked") Token t = (Token)o;
+        return expresion.equals(t.expresion);
     }
 }

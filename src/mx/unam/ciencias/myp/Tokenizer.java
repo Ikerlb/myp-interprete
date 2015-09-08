@@ -7,22 +7,27 @@ import mx.unam.ciencias.edd.Lista;
 public class Tokenizer{
     private Lista<Token> listaDeTokens;    /*UNICO ATRIBUTO DE TOKENIZER*/
 
-    public Tokenizer(String cad){
+    public Tokenizer(String cad) throws InvalidExpressionException{
         listaDeTokens=new Lista<Token>();  /*INICIALIZAMOS LA LISTA*/
         tokenize(cad);
+    }
+
+    public Tokenizer(){
+        listaDeTokens=new Lista<Token>();  /*INICIALIZAMOS LA LISTA*/
     }
 
     public Lista<Token> getLista(){
         return this.listaDeTokens;
     }
 
-    public void tokenize(String cad){
+    public void tokenize(String cad) throws InvalidExpressionException{
         cad.trim();
+        cad.toLowerCase();
         tokenize(cad.toCharArray());
     }
 
-    private void tokenize(char[] arr){
-        int
+    private void tokenize(char[] arr) throws InvalidExpressionException{
+        int par=0;
         String s;
         for(int i=0;i<arr.length;i++){
             /*Si es digito, sigue checando hasta que acabe el numero*/
@@ -37,14 +42,22 @@ public class Tokenizer{
                 i--;
                 listaDeTokens.agrega(new Token(s,1));
             }
-            else if(arr[i]=='('||arr[i]==')')
-                listaDeTokens.agrega(new Token(Character.toString(arr[i]),1));
+            else if(arr[i]=='('){
+                listaDeTokens.agrega(new Token("(",1));
+                par++;
+            }
+            else if(arr[i]==')'){
+                    listaDeTokens.agrega(new Token(")",1));
+                    par--;
+            }
             else if(arr[i]=='+'||arr[i]=='-')
                 listaDeTokens.agrega(new Token(Character.toString(arr[i]),1));
             else if(arr[i]=='^')
-                listaDeTokens.agrega(new Token(Character.toString(arr[i]),1));
+                listaDeTokens.agrega(new Token("^",1));
             else if(arr[i]=='*'||arr[i]=='/')
                 listaDeTokens.agrega(new Token(Character.toString(arr[i]),1));
+            else if(arr[i]=='x')
+                listaDeTokens.agrega(new Token("x",1));
             else if(arr[i]=='s'){
                 if(i+1!=arr.length){
                     i++;
@@ -93,7 +106,15 @@ public class Tokenizer{
                     i+=2;
                     listaDeTokens.agrega(new Token("tan",1));
                 }
+            else{
+                throw new InvalidExpressionException("Expresion invalida. Caracter no soportado");
+            }
         }
+        if(par!=0)
+            throw new InvalidExpressionException("Expresion invalida. Error con los parentesis");
     }
 
+    public void agregarALista(String s) throws InvalidExpressionException{
+        tokenize(s);
+    }
 }
