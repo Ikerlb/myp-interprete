@@ -18,8 +18,14 @@ public class Token{
         return valorDelToken;
     }
 
+    /*
     public String toString(){
         return expresion.toString()+"["+valorDelToken+"]";
+    }
+    */
+
+    public String toString(){
+        return expresion.toString();
     }
 
     public boolean equals(Object o){

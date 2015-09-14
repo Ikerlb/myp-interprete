@@ -14,7 +14,6 @@ public class TestTokenizer{
 
     private Random random;
     private Lista<Token> lista;
-    private Tokenizer tok;
     private final String[] EXPR={"sin", "cos", "tan","cot","csc","sqr","+","-","^","/","x"};
 
     public TestTokenizer(){
@@ -23,30 +22,31 @@ public class TestTokenizer{
     }
 
     //testGetLista
-    @Test public void testConstructorVacio(){
+    @Test public void testTokenizer(){
         int r=random.nextInt(1000);
         int num=random.nextInt(EXPR.length);
-        tok=new Tokenizer();
+        String s="";
+        Lista<Token> tokens=lista;
         try{
             for(int i=0;i<r;i++){
-                tok.agregarALista(EXPR[num]);
+                s+=EXPR[num];
                 lista.agrega(new Token(EXPR[num],1));
                 num=random.nextInt(EXPR.length);
             }
+            tokens=Tokenizer.tokenize(s);
         }
         catch(InvalidExpressionException e){
             System.out.println(e);
         }
-        Assert.assertTrue(lista.equals(tok.getLista()));
-        num=random.nextInt(EXPR.length);
+        Assert.assertTrue(lista.equals(tokens));
         try{
-            tok.agregarALista("\\( \\)");
+            Tokenizer.tokenize("\\(");
+            Assert.fail();
         }
         catch(InvalidExpressionException e){}
-        Assert.assertFalse(lista.equals(tok.getLista()));
         try{
-            tok.agregarALista("\\(");
-            Assert.fail();
+             for(String str:EXPR)
+                Tokenizer.tokenize(str);
         }
         catch(InvalidExpressionException e){}
         //Assert.assertTrue(lista.getPrimero().equals(tok.getLista().getPrimero()));
