@@ -18,6 +18,10 @@ public class Token{
         return valorDelToken;
     }
 
+    public void setExpresion(String s){
+        expresion=s;
+    }
+
     /*
     public String toString(){
         return expresion.toString()+"["+valorDelToken+"]";
@@ -35,5 +39,9 @@ public class Token{
             return false;
         @SuppressWarnings("unchecked") Token t = (Token)o;
         return expresion.equals(t.expresion);
+    }
+
+    public Token clone(){
+        return new Token(expresion,valorDelToken);
     }
 }

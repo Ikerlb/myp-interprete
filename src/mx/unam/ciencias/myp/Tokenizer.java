@@ -44,9 +44,9 @@ public class Tokenizer{
             else if(arr[i]=='+'||arr[i]=='-')
                 listaDeTokens.agrega(new Token(Character.toString(arr[i]),2));
             else if(arr[i]=='^')
-                listaDeTokens.agrega(new Token("^",3));
-            else if(arr[i]=='*'||arr[i]=='/')
                 listaDeTokens.agrega(new Token(Character.toString(arr[i]),4));
+            else if(arr[i]=='*'||arr[i]=='/')
+                listaDeTokens.agrega(new Token(Character.toString(arr[i]),3));
             else if(arr[i]=='x')
                 listaDeTokens.agrega(new Token("x",5));
             else if(arr[i]=='s'){

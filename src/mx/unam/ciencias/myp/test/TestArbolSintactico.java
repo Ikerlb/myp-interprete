@@ -23,39 +23,84 @@ public class TestArbolSintactico{
 
     @Test public void testParse(){
         try{
-            as.parse(Tokenizer.tokenize("5 * 3 + (4 + 2 / 2 * 8\\)"));
+            as.parse(Tokenizer.tokenize("3+4*2/(1-5\\)^2^3"));
         }
         catch(InvalidExpressionException e){
             System.out.println(e);
         }
-        System.out.println(as);
+        //System.out.println(as);
         try{
-            as.parse(Tokenizer.tokenize("2*3+1"));
+            as.parse(Tokenizer.tokenize("x+sin(1\\)"));
         }
         catch(InvalidExpressionException e){
             System.out.println(e);
         }
-        System.out.println(as);
         try{
-            as.parse(Tokenizer.tokenize("(2*3+1\\)"));
+            as.parse(Tokenizer.tokenize("cos(2*sin(2^2\\)\\)"));
+            //System.out.println(as.getExpresion().getToken());
         }
         catch(InvalidExpressionException e){
             System.out.println(e);
         }
-        System.out.println(as);
+        //System.out.println(as);
         try{
             as.parse(Tokenizer.tokenize("2*3+1*5/5-4"));
         }
         catch(InvalidExpressionException e){
             System.out.println(e);
         }
-        System.out.println(as);
+        //System.out.println(as);
         try{
             as.parse(Tokenizer.tokenize("(2*3\\)+(1+2\\)"));
         }
         catch(InvalidExpressionException e){
             System.out.println(e);
         }
-        System.out.println(as);
+        //System.out.println(as);
+        try{
+            as.parse(Tokenizer.tokenize("(2*3\\)+(1+2\\)*(2*4\\)"));
+        }
+        catch(InvalidExpressionException e){
+            System.out.println(e);
+        }
+        //System.out.println(as);
+        try{
+            as.parse(Tokenizer.tokenize("(2*3\\)*(1+2\\)+(2*4\\)"));
+        }
+        catch(InvalidExpressionException e){
+            System.out.println(e);
+        }
+        //System.out.println(as);
+    }
+
+    @Test public void TestEvalua(){
+        try{
+            as.parse(Tokenizer.tokenize("x+3+4+5+4+3+2"));
+            System.out.println(as.evalua(10));
+        }
+        catch(InvalidExpressionException e){
+            System.out.println(e);
+        }
+        try{
+            as.parse(Tokenizer.tokenize("x^3*4+6-x"));
+            System.out.println(as.evalua(10));
+        }
+        catch(InvalidExpressionException e){
+            System.out.println(e);
+        }
+        try{
+            as.parse(Tokenizer.tokenize("x+sin(1\\)"));
+            System.out.println(as.evalua(10));
+        }
+        catch(InvalidExpressionException e){
+            System.out.println(e);
+        }
+        try{
+            as.parse(Tokenizer.tokenize("sen(cos(sec(2\\)+2\\)\\)"));
+            System.out.println(as.evalua(Math.PI));
+        }
+        catch(InvalidExpressionException e){
+            System.out.println();
+        }
     }
 }

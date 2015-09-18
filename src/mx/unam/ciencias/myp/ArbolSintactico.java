@@ -13,7 +13,15 @@ public class ArbolSintactico{
         expresion=null;
     }
 
-    /*parsea la lista de tokens para crear el arbol sintactico. hasta el momento funciona unicamente con parentesis [solo funciona escapando ")"]*/
+    public NodoExpresion getExpresion(){
+        return this.expresion;
+    }
+
+    public void setExpresion(NodoExpresion ne){
+        this.expresion=ne;
+    }
+
+    /*parsea la lista de tokens para crear el arbol sintactico. el uso de parentesis solo funciona escapando ")"*/
     public void parse(Lista<Token> lista){
         Pila<NodoExpresion> expresiones=new Pila<NodoExpresion>();
         Pila<Token> oper=new Pila<Token>();
@@ -24,9 +32,10 @@ public class ArbolSintactico{
             //si es variable o es cualquier numero, solo mete a la pila de expresiones
             else if(t.getValor()==5)
                 expresiones.mete(new NodoExpresion(t));
-            //si es un operad
+            //checamos si es un operador
             else if(t.getValor()==2||t.getValor()==3||t.getValor()==4){
                 if(!oper.esVacia())
+                //checamos jerarquia
                     while(oper.mira().getValor()>=t.getValor()){
                         e2=expresiones.saca();
                         e1=expresiones.saca();
@@ -45,16 +54,100 @@ public class ArbolSintactico{
                         expresiones.mete(new NodoExpresion(oper.saca(),e1,e2));
                     }
                 oper.saca();
+                if(!oper.esVacia()){
+                    if(oper.mira().getValor()==1){
+                        e2=expresiones.saca();
+                        expresiones.mete(new NodoExpresion(oper.saca(),e2));
+                    }
+                }
             }
+            else if(t.getValor()==1)
+                oper.mete(t);
             else
                 System.out.println("error"+t);
         }
-        if(!oper.esVacia()){
+        //los operadores que quedan estan ordenados de acuerdo a la jerarquia
+        while(!oper.esVacia()){
             e2=expresiones.saca();
             e1=expresiones.saca();
             expresiones.mete(new NodoExpresion(oper.saca(),e1,e2));
         }
         expresion=expresiones.saca();
+    }
+
+    public double evalua(double d){
+        NodoExpresion nuevoNodo=expresion.clone();
+        sustituye(nuevoNodo,d);
+        return evalua(nuevoNodo);
+    }
+
+    private double evalua(NodoExpresion ne){
+        double doub=1;
+        NodoExpresion operando1=ne.getOperando1();
+        NodoExpresion operando2=ne.getOperando2();
+        String s=ne.getToken().getExpresion();
+        if(s.equals("+")){
+            if((operando1!=null)&&(operando2!=null))
+                return evalua(operando1)+evalua(operando2);
+        }
+        else if(s.equals("-")){
+            if((operando1!=null)&&(operando2!=null))
+            //if(operando2!=null)
+                return evalua(operando1)-evalua(operando2);
+        }
+        else if(s.equals("*")){
+            if((operando1!=null)&&(operando2!=null))
+            //if(operando2!=null)
+                return evalua(operando1)*evalua(operando2);
+        }
+        else if(s.equals("/")){
+            if((operando1!=null)&&(operando2!=null))
+            //if(operando2!=null)
+                return evalua(operando1)/evalua(operando2);
+        }
+        else if(s.equals("^")){
+            if((operando1!=null)&&(operando2!=null))
+            //if(operando2!=null)
+                return Math.pow(evalua(operando1),evalua(operando2));
+        }
+        else if(s.equals("sin")){
+            if(operando2!=null)
+                return Math.sin(evalua(operando2));
+        }
+        else if(s.equals("sec")){
+            if(operando2!=null)
+                return 1/Math.cos(evalua(operando2));
+        }
+        else if(s.equals("sqr")){
+            if(operando2!=null)
+                return Math.sqrt(evalua(operando2));
+        }
+        else if(s.equals("cos")){
+            if(operando2!=null)
+                return Math.cos(evalua(operando2));
+        }
+        else if(s.equals("csc")){
+            if(operando2!=null)
+                return 1/Math.sin(evalua(operando2));
+        }
+        else if(s.equals("cot")){
+            if(operando2!=null)
+                return 1/Math.tan(evalua(operando2));
+        }
+        else if(s.equals("tan")){
+            if(operando2!=null)
+                return Math.tan(evalua(operando2));
+        }
+        return Double.parseDouble(ne.getToken().getExpresion());
+    }
+
+    private void sustituye(NodoExpresion ne,double d){
+        if(ne.getOperando1()!=null)
+            sustituye(ne.getOperando1(),d);
+        if(ne.getToken().getExpresion().equals("x"))
+            ne.getToken().setExpresion(Double.toString(d));
+        if(ne.getOperando2()!=null)
+            sustituye(ne.getOperando2(),d);
     }
 
     public String toString(){
@@ -73,4 +166,6 @@ public class ArbolSintactico{
             s+=toString(ne.getOperando2());
         return s;
     }
+
+
 }
