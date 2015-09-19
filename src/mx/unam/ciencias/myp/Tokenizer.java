@@ -6,6 +6,14 @@ import mx.unam.ciencias.edd.Lista;
 
 public class Tokenizer{
 
+    /**
+     * Metodo estatico que convierte una cadena de string en una lista de tokens.
+     * Lanza una excepcion si se encuentra un caracter no identificado o si los parentesis
+     * se encuentran incompletos. (es necesario escapar los parentesis)
+     *
+     * @throws InvalidExpressionException
+     * @return lista.
+     */
     public static Lista<Token> tokenize(String cad) throws InvalidExpressionException{
         cad.trim();
         cad.toLowerCase();
@@ -79,9 +87,9 @@ public class Tokenizer{
                         if(i+1!=arr.length){
                             i++;
                             if(arr[i]=='s')
-                                listaDeTokens.agrega(new Token("cos",1));
-                            else
                                 listaDeTokens.agrega(new Token("cot",1));
+                            else
+                                listaDeTokens.agrega(new Token("cos",1));
                         }
                     }
                     else if(arr[i]=='s'){

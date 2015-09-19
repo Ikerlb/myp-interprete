@@ -89,15 +89,15 @@ public class TestArbolSintactico{
             System.out.println(e);
         }
         try{
-            as.parse(Tokenizer.tokenize("x+sin(1\\)"));
-            System.out.println(as.evalua(10));
+            as.parse(Tokenizer.tokenize("x"));
+            //System.out.println(as.evalua(2.0/720.0,-1,1));
         }
         catch(InvalidExpressionException e){
             System.out.println(e);
         }
         try{
-            as.parse(Tokenizer.tokenize("sen(cos(sec(2\\)+2\\)\\)"));
-            System.out.println(as.evalua(Math.PI));
+            as.parse(Tokenizer.tokenize("sqr(x)"));
+            System.out.println(as.evalua(-1));
         }
         catch(InvalidExpressionException e){
             System.out.println();

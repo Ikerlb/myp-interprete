@@ -21,8 +21,15 @@ public class ArbolSintactico{
         this.expresion=ne;
     }
 
-    /*parsea la lista de tokens para crear el arbol sintactico. el uso de parentesis solo funciona escapando ")"*/
+    /**
+     * Parsea la lista de tokens y crea el arbol sintactico
+     *
+     *
+     * @param lista de tokens
+     */
     public void parse(Lista<Token> lista){
+        if(lista.getElementos()==0)
+            return;
         Pila<NodoExpresion> expresiones=new Pila<NodoExpresion>();
         Pila<Token> oper=new Pila<Token>();
         NodoExpresion e1,e2;
@@ -75,14 +82,24 @@ public class ArbolSintactico{
         expresion=expresiones.saca();
     }
 
+    /**
+     * Evalua el arbol sustituyendo con un double cualquier variable que encuentre
+     *
+     *
+     * @param d el numero que sustituir por x
+     * @return el arbol evaluado
+     */
     public double evalua(double d){
-        NodoExpresion nuevoNodo=expresion.clone();
-        sustituye(nuevoNodo,d);
-        return evalua(nuevoNodo);
+        if(this.expresion!=null){
+            NodoExpresion nuevoNodo=expresion.clone();
+            sustituye(nuevoNodo,d);
+            return evalua(nuevoNodo);
+        }
+        return 0.0;
     }
 
     private double evalua(NodoExpresion ne){
-        double doub=1;
+        double doub1=0;
         NodoExpresion operando1=ne.getOperando1();
         NodoExpresion operando2=ne.getOperando2();
         String s=ne.getToken().getExpresion();
@@ -102,7 +119,7 @@ public class ArbolSintactico{
         }
         else if(s.equals("/")){
             if((operando1!=null)&&(operando2!=null))
-            //if(operando2!=null)
+
                 return evalua(operando1)/evalua(operando2);
         }
         else if(s.equals("^")){
@@ -150,6 +167,12 @@ public class ArbolSintactico{
             sustituye(ne.getOperando2(),d);
     }
 
+    /**
+     * toString
+     *
+     *
+     * @return representacion en cadena de el arbol
+     */
     public String toString(){
         if(expresion==null)
             return "";
@@ -166,6 +189,5 @@ public class ArbolSintactico{
             s+=toString(ne.getOperando2());
         return s;
     }
-
 
 }

@@ -49,6 +49,13 @@ public class TestTokenizer{
                 Tokenizer.tokenize(str);
         }
         catch(InvalidExpressionException e){}
+
+            try{
+                    Tokenizer.tokenize("x");
+            }
+            catch(InvalidExpressionException e){
+                System.out.println(e);
+            }
         //Assert.assertTrue(lista.getPrimero().equals(tok.getLista().getPrimero()));
         //String s="999sinsec";
     }
