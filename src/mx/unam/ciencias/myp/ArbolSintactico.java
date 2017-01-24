@@ -1,3 +1,5 @@
+//Todo make enum for token types for better readability
+
 package mx.unam.ciencias.myp;
 import mx.unam.ciencias.edd.ExcepcionIndiceInvalido;
 import mx.unam.ciencias.edd.IteradorLista;
